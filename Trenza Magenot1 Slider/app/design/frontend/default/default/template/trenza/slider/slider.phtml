@@ -1,0 +1,63 @@
+<?php
+	$sliderCollection = $this->getSliderCollection();
+	$i = 0;
+?>
+<?php $showdesc = $this->isShowDescription() ?>
+<?php $listStyle = $this->getListStyle() ?>
+<?php if (!count($sliderCollection)): ?>
+<?php elseif ($listStyle == '1'):?>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('css/slider/responsiveslides.css');?>" media="all" />
+<script type="text/javascript" src="<?php echo $this->getJsUrl('slider/responsiveslides.js') ?>"></script>
+<script type="text/javascript">  
+    var $j = jQuery.noConflict();   
+    $j(document).ready(function(){    
+        $j("#slider1").responsiveSlides({
+            maxwidth: 960,
+            speed: 800,
+            pager: true,           // Boolean: Show pager, true or false
+            nav: true             // Boolean: Show navigation, true or false
+          });
+    });
+</script>
+<div class="slider">
+    <ul class="rslides" id="slider1">
+        <?php foreach($sliderCollection as $slider): $i++; ?>
+        <li>
+            <a href="<?php echo $slider['weblink'];?>" title="<?php echo $slider['title']?>">
+            <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'slider/' . $slider['filename']?>" alt="<?php echo $slider['title']?>" />
+            </a>
+            <?php if ($showdesc == '1' && $slider['content'] != null):?>
+    		<p class="caption"><?php echo $slider['content']; ?></p>
+            <?php endif;?>
+        </li>
+        <?php endforeach; ?>     
+    </ul>
+</div>
+<?php elseif ($listStyle == '2'):?>
+<script type="text/javascript" src="<?php echo $this->getJsUrl('slider/jquery.flexslider-min.js') ?>"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('css/slider/flexslider.css');?>" media="all" />
+<div id="slider-3" class="flexslider">
+  <ul class="slides">
+    <?php foreach($sliderCollection as $slider): $i++; ?>
+    <li>
+      <a href="<?php echo $slider['link'];?>" title="<?php echo $slider['title']?>"><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'slider/' . $slider['filename']?>" alt="<?php echo $slider['title']?>"/></a>
+    </li>
+    <?php endforeach; ?>
+  </ul>
+</div>
+<script type="text/javascript">   
+var $j = jQuery.noConflict();  
+$j(document).ready(function(){
+    $j('.flexslider').flexslider({
+        animation: "fade",
+        pauseOnAction: false,
+        slideshow: true,                //Boolean: Animate slider automatically
+        slideshowSpeed: 7000,           //Integer: Set the speed of the slideshow cycling, in milliseconds
+        animationSpeed: 600
+  });
+});   
+</script>
+<?php elseif ($listStyle == ''):?>
+	<?php echo ("Please Upload slider Or Configuration"); ?>
+<?php endif;?>
+<div class="clear"></div>
